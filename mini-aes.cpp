@@ -1,5 +1,5 @@
 #include "mini-aes.h"
 
-int miniAES::add (int param1, int param2){
-    return param1 + param2;
+std::tuple<unsigned, unsigned, unsigned> miniAES::round_key_generator (unsigned secret_key){
+    return {0, 0, secret_key};
 }
