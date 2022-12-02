@@ -5,7 +5,7 @@ int miniAES::MiniAES::bit_count(unsigned int n) {
  return (int)log2(n)+1;
 }
 
-std::map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(unsigned nibble) {
+std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(unsigned nibble) {
   substitution_table[0b0000] = 0b1110;
   substitution_table[0b0001] = 0b0100;
   substitution_table[0b0010] = 0b1101;

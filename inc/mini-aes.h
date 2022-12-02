@@ -2,7 +2,7 @@
 #define MINI_AES_H
 
 #include <tuple>
-#include <map>
+#include <unordered_map>
 namespace miniAES{
 
 constexpr unsigned kbitshiftw0 = 12;
@@ -14,10 +14,10 @@ class MiniAES {
   std::tuple<unsigned, unsigned, unsigned, unsigned> extract_key_nibbles(unsigned secret_key);
   std::tuple<unsigned, unsigned, unsigned> round_key_generator(unsigned secret_key);
   int bit_count(unsigned n);
-  std::map<unsigned, unsigned>::iterator nibble_sub(unsigned nibble);
+  std::unordered_map<unsigned, unsigned>::iterator nibble_sub(unsigned nibble);
  private:
-  std::map<unsigned, unsigned> substitution_table;
-  std::map<unsigned, unsigned>::iterator it;
+  std::unordered_map<unsigned, unsigned> substitution_table;
+  std::unordered_map<unsigned, unsigned>::iterator it;
 };
 
 }  // namespace miniAES

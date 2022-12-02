@@ -28,6 +28,9 @@ TEST(MiniAesTest, HandleRoundKeyGeneration)
    // testing round key generation for round 1 ie k0
    auto keys = obj.round_key_generator(0b1100001111110000); 
    EXPECT_EQ(0b1100001111110000, std::get<2>(keys));
+   
+   // testing round key generation for round 2 ie k1
+   // EXPECT_EQ(0b0011000011111111, std::get<1>(keys));
 
    // testing round key generation for secret key greater than 16 bits
    keys = obj.round_key_generator(0b10000001111101000);
@@ -40,7 +43,7 @@ TEST(MiniAesTest, NibleSubFunction)
 {
    miniAES::MiniAES obj{};
    //testing input returns desired output via key and values using std::map data structure
-   std::map<unsigned, unsigned>::iterator result = obj.nibble_sub(0b0000);
+   std::unordered_map<unsigned, unsigned>::iterator result = obj.nibble_sub(0b0000);
    EXPECT_EQ(0b1110, result->second);
    result = obj.nibble_sub(0b1111);
    EXPECT_EQ(0b0111, result->second);
