@@ -30,7 +30,7 @@ TEST(MiniAesTest, HandleRoundKeyGeneration)
    EXPECT_EQ(0b1100001111110000, std::get<2>(keys));
    
    // testing round key generation for round 2 ie k1
-   // EXPECT_EQ(0b0011000011111111, std::get<1>(keys));
+   EXPECT_EQ(0b0011000011111111, std::get<1>(keys));
 
    // testing round key generation for secret key greater than 16 bits
    keys = obj.round_key_generator(0b10000001111101000);

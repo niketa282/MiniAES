@@ -1,11 +1,11 @@
 #include "mini-aes.h"
 #include <cmath>
 
-int miniAES::MiniAES::bit_count(unsigned int n) {
+int miniAES::MiniAES::bit_count(unsigned const& n) {
  return (int)log2(n)+1;
 }
 
-std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(unsigned nibble) {
+std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(unsigned const& nibble) {
   substitution_table[0b0000] = 0b1110;
   substitution_table[0b0001] = 0b0100;
   substitution_table[0b0010] = 0b1101;
@@ -29,19 +29,30 @@ std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(un
 }
 
 std::tuple<unsigned, unsigned, unsigned, unsigned> miniAES::MiniAES::extract_key_nibbles(unsigned secret_key){
-  unsigned w0 = secret_key  >> kbitshiftw0;
+  unsigned w0 = secret_key >> kbitshiftw0;
   unsigned w1 = (secret_key >> kbitshiftw1) & kandval;
   unsigned w2 = (secret_key >> kbitshiftw2) & kandval;
   unsigned w3 = (secret_key & kandval); 
   return {w0, w1, w2, w3};
 }
 
+unsigned miniAES::MiniAES::concatanate_key_nibbles(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles) {
+  auto [w4, w5, w6, w7] = nibbles;
+  return (w4 << kbitshiftw0) | (w5 << kbitshiftw1) | (w6 << kbitshiftw2) | (w7);
+}
+
 std::tuple<unsigned, unsigned, unsigned> miniAES::MiniAES::round_key_generator(unsigned secret_key){
   if (bit_count(secret_key) > 16) {
     return {0, 0, 0}; // if key size greater than 16 bits we get no round keys generated 
   } 
-   
-  return {0, 0, secret_key};
+  auto [w0, w1, w2, w3] = extract_key_nibbles(secret_key);
+ 
+  unsigned w4 = w0 ^ ((nibble_sub(w3))->second) ^ rcon1;
+  unsigned w5 = w1 ^ w4;
+  unsigned w6 = w2 ^ w5;
+  unsigned w7 = w3 ^ w6;
+  std::tuple<unsigned, unsigned, unsigned, unsigned> values_to_concatanate_r1 = {w4, w5, w6, w7};
+  return {0, concatanate_key_nibbles(values_to_concatanate_r1), secret_key};
 }
 
 
