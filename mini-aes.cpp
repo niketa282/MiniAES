@@ -28,12 +28,20 @@ std::map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(unsigned nib
   return it;
 }
 
+std::tuple<unsigned, unsigned, unsigned, unsigned> miniAES::MiniAES::extract_key_nibbles(unsigned secret_key){
+  unsigned w0 = secret_key  >> kbitshiftw0;
+  unsigned w1 = (secret_key >> kbitshiftw1) & kandval;
+  unsigned w2 = (secret_key >> kbitshiftw2) & kandval;
+  unsigned w3 = (secret_key & kandval); 
+  return {w0, w1, w2, w3};
+}
+
 std::tuple<unsigned, unsigned, unsigned> miniAES::MiniAES::round_key_generator(unsigned secret_key){
-    if (bit_count(secret_key) > 16) {
-      return {0, 0, 0}; // if key size greater than 16 bits we get no round keys generated 
-    }
-       
-    return {0, 0, secret_key};
+  if (bit_count(secret_key) > 16) {
+    return {0, 0, 0}; // if key size greater than 16 bits we get no round keys generated 
+  } 
+   
+  return {0, 0, secret_key};
 }
 
 

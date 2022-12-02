@@ -8,6 +8,20 @@ TEST(BitCounterTest, CountNumbBits)
    EXPECT_EQ(16, count_numb_bits);
 }
 
+TEST(MiniAesTest, ExtractNibblesFunciton)
+{
+   miniAES::MiniAES obj{};
+   auto keys = obj.extract_key_nibbles(0b1100001111110000); 
+   // check nibble w0
+   EXPECT_EQ(0b1100, std::get<0>(keys));
+   // check nibble w1
+   EXPECT_EQ(0b0011, std::get<1>(keys));
+   // check nibble w2
+   EXPECT_EQ(0b1111, std::get<2>(keys));
+   // check nibble w3
+   EXPECT_EQ(0b0000, std::get<3>(keys));
+}
+
 TEST(MiniAesTest, HandleRoundKeyGeneration)
 {
    miniAES::MiniAES obj{};

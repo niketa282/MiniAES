@@ -4,12 +4,18 @@
 #include <tuple>
 #include <map>
 namespace miniAES{
+
+constexpr unsigned kbitshiftw0 = 12;
+constexpr unsigned kbitshiftw1 = 8;
+constexpr unsigned kbitshiftw2 = 4;
+constexpr unsigned kandval = 0x0F;
 class MiniAES {
-public:
-    std::tuple<unsigned, unsigned, unsigned>round_key_generator(unsigned secret_key);
-    int bit_count(unsigned n);
-    std::map<unsigned, unsigned>::iterator nibble_sub(unsigned nibble);
-private:
+ public:
+  std::tuple<unsigned, unsigned, unsigned, unsigned> extract_key_nibbles(unsigned secret_key);
+  std::tuple<unsigned, unsigned, unsigned> round_key_generator(unsigned secret_key);
+  int bit_count(unsigned n);
+  std::map<unsigned, unsigned>::iterator nibble_sub(unsigned nibble);
+ private:
   std::map<unsigned, unsigned> substitution_table;
   std::map<unsigned, unsigned>::iterator it;
 };
