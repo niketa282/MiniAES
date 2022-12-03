@@ -61,4 +61,22 @@ std::tuple<unsigned, unsigned, unsigned> miniAES::MiniAES::round_key_generator(u
   return {concatanate_key_nibbles(values_to_concatanate_r2), concatanate_key_nibbles(values_to_concatanate_r1), secret_key};
 }
 
+unsigned miniAES::MiniAES::encryption(unsigned plaintext, unsigned secret_key) {
+ unsigned round = 0;
+  unsigned addition = 0;
+ while(round < MAX_ROUNDS) {
+   switch(round) {
+    case 0: {
+      auto k0 = std::get<2>(round_key_generator(secret_key));
+      addition = plaintext ^ k0;
+      ++round;
+      break;
+    }
+    //case 1:
+    // case 2:
+   }
+ }
+ return addition;
+}
+
 
