@@ -3,8 +3,11 @@
 
 #include <tuple>
 #include <unordered_map>
+#include <array>
+
 namespace miniAES{
 
+constexpr unsigned kmaxsize = 16;
 constexpr unsigned kbitshiftw0 = 12;
 constexpr unsigned kbitshiftw1 = 8;
 constexpr unsigned kbitshiftw2 = 4;
@@ -21,6 +24,7 @@ class MiniAES {
   std::unordered_map<unsigned, unsigned>::iterator nibble_sub(unsigned const& nibble);
   std::tuple<unsigned, unsigned, unsigned, unsigned> shift_row(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
   unsigned encryption(unsigned plaintext, unsigned secret_key);
+  unsigned mix_column(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
  private:
   std::unordered_map<unsigned, unsigned> substitution_table;
   std::unordered_map<unsigned, unsigned>::iterator it;

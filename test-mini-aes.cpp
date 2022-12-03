@@ -32,6 +32,13 @@ TEST(BitCounterTest, ShiftRow)
    EXPECT_EQ(0b0111, std::get<3>(obj.shift_row(result)));
 }
 
+TEST(BitCounterTest, MixColumn)
+{
+   miniAES::MiniAES obj{};
+   auto values = std::make_tuple(0b1111u, 0b0001u, 0b1010u, 0b0111u);
+   EXPECT_EQ(0b0000111000111110, obj.mix_column(values));
+}
+
 TEST(MiniAesTest, HandleRoundKeyGeneration)
 {
    miniAES::MiniAES obj{};
