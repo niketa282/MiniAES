@@ -60,6 +60,6 @@ TEST(MiniAesTest, Encryptiontest)
    miniAES::MiniAES obj{};
    // test for round 0 
    auto result = obj.encryption(0b1001110001100011, 0b1100001111110000);
-   EXPECT_EQ(0b0101111110010011, result);
+   EXPECT_EQ(0b1111011110100001, result);
 }
 

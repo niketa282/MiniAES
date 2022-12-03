@@ -63,20 +63,21 @@ std::tuple<unsigned, unsigned, unsigned> miniAES::MiniAES::round_key_generator(u
 
 unsigned miniAES::MiniAES::encryption(unsigned plaintext, unsigned secret_key) {
  unsigned round = 0;
-  unsigned addition = 0;
+ unsigned concatanateresult = 0;
  while(round < MAX_ROUNDS) {
-   switch(round) {
-    case 0: {
-      auto k0 = std::get<2>(round_key_generator(secret_key));
-      addition = plaintext ^ k0;
-      ++round;
-      break;
-    }
-    //case 1:
-    // case 2:
-   }
+  auto k0 = std::get<2>(round_key_generator(secret_key));
+  auto keyaddition = plaintext ^ k0;
+  ++round;
+  auto [w0, w1, w2, w3] = extract_key_nibbles(keyaddition);
+  unsigned nibble_sub_w0 = (nibble_sub(w0))->second;
+  unsigned nibble_sub_w1 = (nibble_sub(w1))->second;
+  unsigned nibble_sub_w2 = (nibble_sub(w2))->second;
+  unsigned nibble_sub_w3 = (nibble_sub(w3))->second;
+  std::tuple<unsigned, unsigned, unsigned, unsigned> nibble_sub_output = {nibble_sub_w0, nibble_sub_w1, nibble_sub_w2, nibble_sub_w3};
+  concatanateresult = concatanate_key_nibbles(nibble_sub_output);
+  ++round;
  }
- return addition;
+ return concatanateresult; // TO FIX
 }
 
 
