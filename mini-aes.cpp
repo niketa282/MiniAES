@@ -52,7 +52,13 @@ std::tuple<unsigned, unsigned, unsigned> miniAES::MiniAES::round_key_generator(u
   unsigned w6 = w2 ^ w5;
   unsigned w7 = w3 ^ w6;
   std::tuple<unsigned, unsigned, unsigned, unsigned> values_to_concatanate_r1 = {w4, w5, w6, w7};
-  return {0, concatanate_key_nibbles(values_to_concatanate_r1), secret_key};
+
+  unsigned w8 = w4 ^ ((nibble_sub(w7))->second) ^ rcon2;
+  unsigned w9 = w5 ^ w8;
+  unsigned w10 = w6 ^ w9;
+  unsigned w11 = w7 ^ w10;
+  std::tuple<unsigned, unsigned, unsigned, unsigned> values_to_concatanate_r2 = {w8, w9, w10, w11};
+  return {concatanate_key_nibbles(values_to_concatanate_r2), concatanate_key_nibbles(values_to_concatanate_r1), secret_key};
 }
 
 

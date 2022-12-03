@@ -10,6 +10,7 @@ constexpr unsigned kbitshiftw1 = 8;
 constexpr unsigned kbitshiftw2 = 4;
 constexpr unsigned kandval = 0x0F;
 constexpr unsigned rcon1 = 0b0001;
+constexpr unsigned rcon2 = 0b0010;
 class MiniAES {
  public:
   std::tuple<unsigned, unsigned, unsigned, unsigned> extract_key_nibbles(unsigned secret_key);

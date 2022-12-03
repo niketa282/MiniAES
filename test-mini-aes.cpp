@@ -25,12 +25,15 @@ TEST(MiniAesTest, ExtractNibblesFunciton)
 TEST(MiniAesTest, HandleRoundKeyGeneration)
 {
    miniAES::MiniAES obj{};
-   // testing round key generation for round 1 ie k0
+   // testing round key generation for round 0 ie k0
    auto keys = obj.round_key_generator(0b1100001111110000); 
    EXPECT_EQ(0b1100001111110000, std::get<2>(keys));
    
-   // testing round key generation for round 2 ie k1
+   // testing round key generation for round 1 ie k1
    EXPECT_EQ(0b0011000011111111, std::get<1>(keys));
+
+   // testing round key generation for round 2 ie k2
+   EXPECT_EQ(0b0110011010010110, std::get<0>(keys));
 
    // testing round key generation for secret key greater than 16 bits
    keys = obj.round_key_generator(0b10000001111101000);
