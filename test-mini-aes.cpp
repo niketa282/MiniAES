@@ -22,6 +22,16 @@ TEST(MiniAesTest, ExtractNibblesFunciton)
    EXPECT_EQ(0b0000, std::get<3>(keys));
 }
 
+TEST(BitCounterTest, ShiftRow)
+{
+   miniAES::MiniAES obj{};
+   std::tuple<unsigned, unsigned, unsigned, unsigned> result = obj.extract_key_nibbles(0b1111011110100001);
+   EXPECT_EQ(0b1111, std::get<0>(obj.shift_row(result)));
+   EXPECT_EQ(0b0001, std::get<1>(obj.shift_row(result)));
+   EXPECT_EQ(0b1010, std::get<2>(obj.shift_row(result)));
+   EXPECT_EQ(0b0111, std::get<3>(obj.shift_row(result)));
+}
+
 TEST(MiniAesTest, HandleRoundKeyGeneration)
 {
    miniAES::MiniAES obj{};

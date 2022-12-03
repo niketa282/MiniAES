@@ -28,6 +28,14 @@ std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(un
   return it;
 }
 
+std::tuple<unsigned, unsigned, unsigned, unsigned> miniAES::MiniAES::shift_row(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles) {
+  auto [w0, w1, w2, w3] = nibbles;
+  auto tmp = w1;
+  w1 = w3;
+  w3 = tmp;
+  return {w0, w1, w2, w3};
+}
+
 std::tuple<unsigned, unsigned, unsigned, unsigned> miniAES::MiniAES::extract_key_nibbles(unsigned secret_key){
   unsigned w0 = secret_key >> kbitshiftw0;
   unsigned w1 = (secret_key >> kbitshiftw1) & kandval;

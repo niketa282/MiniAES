@@ -19,6 +19,7 @@ class MiniAES {
   std::tuple<unsigned, unsigned, unsigned> round_key_generator(unsigned secret_key);
   int bit_count(unsigned const& n);
   std::unordered_map<unsigned, unsigned>::iterator nibble_sub(unsigned const& nibble);
+  std::tuple<unsigned, unsigned, unsigned, unsigned> shift_row(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
   unsigned encryption(unsigned plaintext, unsigned secret_key);
  private:
   std::unordered_map<unsigned, unsigned> substitution_table;
