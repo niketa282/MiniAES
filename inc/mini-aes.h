@@ -4,7 +4,7 @@
 #include <tuple>
 #include <unordered_map>
 #include <array>
-
+#include <iostream>
 namespace miniAES{
 
 constexpr unsigned kmaxsize = 16;
@@ -28,6 +28,8 @@ class MiniAES {
  private:
   std::unordered_map<unsigned, unsigned> substitution_table;
   std::unordered_map<unsigned, unsigned>::iterator it;
+  std::tuple<unsigned, unsigned, unsigned, unsigned> nibble_bits;
+  unsigned bitcount = 0;
 };
 
 }  // namespace miniAES

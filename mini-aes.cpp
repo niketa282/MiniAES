@@ -2,7 +2,8 @@
 #include <cmath>
 
 int miniAES::MiniAES::bit_count(unsigned const& n) {
- return (int)log2(n)+1;
+ bitcount = (int)log2(n)+1;
+ return bitcount;
 }
 
 std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(unsigned const& nibble) {
@@ -29,24 +30,24 @@ std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(un
 }
 
 std::tuple<unsigned, unsigned, unsigned, unsigned> miniAES::MiniAES::shift_row(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles) {
-  auto [w0, w1, w2, w3] = nibbles;
-  auto tmp = w1;
-  w1 = w3;
-  w3 = tmp;
-  return {w0, w1, w2, w3};
+  nibble_bits = nibbles;
+  auto tmp = std::get<1>(nibble_bits);
+  std::get<1>(nibble_bits) = std::get<3>(nibble_bits);
+  std::get<3>(nibble_bits) = tmp;
+  return nibble_bits;
 }
 
 std::tuple<unsigned, unsigned, unsigned, unsigned> miniAES::MiniAES::extract_key_nibbles(unsigned secret_key){
-  unsigned w0 = secret_key >> kbitshiftw0;
-  unsigned w1 = (secret_key >> kbitshiftw1) & kandval;
-  unsigned w2 = (secret_key >> kbitshiftw2) & kandval;
-  unsigned w3 = (secret_key & kandval); 
-  return {w0, w1, w2, w3};
+  std::get<0>(nibble_bits) = secret_key >> kbitshiftw0;
+  std::get<1>(nibble_bits) = (secret_key >> kbitshiftw1) & kandval;
+  std::get<2>(nibble_bits) = (secret_key >> kbitshiftw2) & kandval;
+  std::get<3>(nibble_bits) = (secret_key & kandval); 
+  return nibble_bits;
 }
 
 unsigned miniAES::MiniAES::concatanate_key_nibbles(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles) {
-  auto [w4, w5, w6, w7] = nibbles;
-  return (w4 << kbitshiftw0) | (w5 << kbitshiftw1) | (w6 << kbitshiftw2) | (w7);
+  nibble_bits = nibbles;
+  return (std::get<0>(nibble_bits) << kbitshiftw0) | (std::get<1>(nibble_bits) << kbitshiftw1) | (std::get<2>(nibble_bits) << kbitshiftw2) | std::get<3>(nibble_bits);
 }
 
 unsigned miniAES::MiniAES::mix_column(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles) {
@@ -87,8 +88,8 @@ unsigned miniAES::MiniAES::mix_column(std::tuple<unsigned, unsigned, unsigned, u
    auto upperone1 = val5 ^ val6; // 0011
    auto lowerone1 = val7 ^ val8; // 1110
 
-   auto concatanate_value = std::make_tuple(upperone, lowerone, upperone1, lowerone1);
-   return concatanate_key_nibbles(concatanate_value);
+   nibble_bits = std::make_tuple(upperone, lowerone, upperone1, lowerone1);
+   return concatanate_key_nibbles(nibble_bits);
 }
 
 std::tuple<unsigned, unsigned, unsigned> miniAES::MiniAES::round_key_generator(unsigned secret_key){

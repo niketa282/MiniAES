@@ -32,6 +32,13 @@ TEST(BitCounterTest, ShiftRow)
    EXPECT_EQ(0b0111, std::get<3>(obj.shift_row(result)));
 }
 
+TEST(BitCounterTest, ConcatanateKeyNibbles)
+{
+   miniAES::MiniAES obj{};
+   std::tuple<unsigned, unsigned, unsigned, unsigned> result = obj.extract_key_nibbles(0b1111011110100001);
+   EXPECT_EQ(0b1111011110100001, obj.concatanate_key_nibbles(result));
+}
+
 TEST(BitCounterTest, MixColumn)
 {
    miniAES::MiniAES obj{};
