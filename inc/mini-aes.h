@@ -18,7 +18,7 @@ constexpr unsigned MAX_ROUNDS = 1;
 class MiniAES {
  public:
   std::tuple<unsigned, unsigned, unsigned, unsigned> extract_key_nibbles(unsigned secret_key);
-  unsigned concatanate_key_nibbles(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
+  unsigned concatenate_key_nibbles(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
   std::tuple<unsigned, unsigned, unsigned> round_key_generator(unsigned secret_key);
   int bit_count(unsigned const& n);
   std::unordered_map<unsigned, unsigned>::iterator nibble_sub(unsigned const& nibble);

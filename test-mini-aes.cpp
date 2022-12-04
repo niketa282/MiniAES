@@ -36,7 +36,7 @@ TEST(BitCounterTest, ConcatanateKeyNibbles)
 {
    miniAES::MiniAES obj{};
    std::tuple<unsigned, unsigned, unsigned, unsigned> result = obj.extract_key_nibbles(0b1111011110100001);
-   EXPECT_EQ(0b1111011110100001, obj.concatanate_key_nibbles(result));
+   EXPECT_EQ(0b1111011110100001, obj.concatenate_key_nibbles(result));
 }
 
 TEST(BitCounterTest, MixColumn)
@@ -94,4 +94,5 @@ TEST(MiniAesTest, Encryptiontest)
    auto result = obj.encryption(0b1001110001100011, 0b1100001111110000);
    EXPECT_EQ(0b0111001011000110, result);
 }
+
 
