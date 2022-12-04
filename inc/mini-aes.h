@@ -25,6 +25,7 @@ class MiniAES {
   std::tuple<unsigned, unsigned, unsigned, unsigned> shift_row(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
   unsigned encryption(unsigned plaintext, unsigned secret_key);
   unsigned mix_column(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
+  unsigned key_addition(unsigned plain_text, unsigned secret_key);
  private:
   std::unordered_map<unsigned, unsigned> substitution_table{};
   std::unordered_map<unsigned, unsigned>::iterator it{};
@@ -33,6 +34,7 @@ class MiniAES {
   std::tuple<unsigned, unsigned, unsigned, unsigned> k1{};
   unsigned k0 = 0;
   unsigned bitcount = 0;
+  unsigned Keyaddition = 0;
 };
 
 }  // namespace miniAES

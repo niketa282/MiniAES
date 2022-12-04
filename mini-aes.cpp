@@ -111,19 +111,22 @@ std::tuple<unsigned, unsigned, unsigned> miniAES::MiniAES::round_key_generator(u
   return {concatanate_key_nibbles(k2), concatanate_key_nibbles(k1), k0};
 }
 
+unsigned miniAES::MiniAES::key_addition(unsigned plain_text, unsigned secret_key) {
+  Keyaddition = plain_text ^ secret_key;
+  return Keyaddition;
+}
+
 unsigned miniAES::MiniAES::encryption(unsigned plaintext, unsigned secret_key) {
-  auto k0 = std::get<2>(round_key_generator(secret_key));
-  auto keyaddition = plaintext ^ k0;
-  auto [w0, w1, w2, w3] = extract_key_nibbles(keyaddition);
+  // auto k0 = std::get<2>(round_key_generator(secret_key));
+  //auto keyaddition = plaintext ^ k0;
+  auto [w0, w1, w2, w3] = extract_key_nibbles(key_addition(plaintext, std::get<2>(round_key_generator(secret_key))));
   unsigned nibble_sub_w0 = (nibble_sub(w0))->second;
   unsigned nibble_sub_w1 = (nibble_sub(w1))->second;
   unsigned nibble_sub_w2 = (nibble_sub(w2))->second;
   unsigned nibble_sub_w3 = (nibble_sub(w3))->second;
   std::tuple<unsigned, unsigned, unsigned, unsigned> nibble_sub_output = {nibble_sub_w0, nibble_sub_w1, nibble_sub_w2, nibble_sub_w3};
   auto shifted_values = shift_row(nibble_sub_output);
-  mix_column(shifted_values);
-
- return 0; // TO FIX
+  return mix_column(shifted_values); // TO FIX
 }
 
 

@@ -78,12 +78,20 @@ TEST(MiniAesTest, NibleSubFunction)
    EXPECT_EQ(0b0110, result->second);
 }
 
+TEST(MiniAesTest, KeyAddition)
+{
+   miniAES::MiniAES obj{};
+   auto keyAdditionResult = obj.key_addition(0b0000111000111110, 0b0011000011111111);
+   EXPECT_EQ(0b0011111011000001, keyAdditionResult);
+   keyAdditionResult = obj.key_addition(0b1001110001100011, 0b1100001111110000);
+   EXPECT_EQ(0b0101111110010011, keyAdditionResult);
+}
 
-TEST(MiniAesTest, DISABLED_Encryptiontest)
+TEST(MiniAesTest, Encryptiontest)
 {
    miniAES::MiniAES obj{};
    // test for round 0 
    auto result = obj.encryption(0b1001110001100011, 0b1100001111110000);
-   EXPECT_EQ(0b0011111011000001, result);
+   EXPECT_EQ(0b0000111000111110, result);
 }
 
