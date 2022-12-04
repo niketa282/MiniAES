@@ -126,7 +126,8 @@ unsigned miniAES::MiniAES::encryption(unsigned plaintext, unsigned secret_key) {
   unsigned nibble_sub_w3 = (nibble_sub(w3))->second;
   std::tuple<unsigned, unsigned, unsigned, unsigned> nibble_sub_output = {nibble_sub_w0, nibble_sub_w1, nibble_sub_w2, nibble_sub_w3};
   auto shifted_values = shift_row(nibble_sub_output);
-  return mix_column(shifted_values); // TO FIX
+  // mix_column(shifted_values);
+  return key_addition(mix_column(shifted_values), std::get<1>(round_key_generator(secret_key)));
 }
 
 
