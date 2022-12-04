@@ -21,9 +21,11 @@ class MiniAES {
   unsigned concatenate_key_nibbles(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
   std::tuple<unsigned, unsigned, unsigned> round_key_generator(unsigned secret_key);
   int bit_count(unsigned const& n);
-  std::unordered_map<unsigned, unsigned>::iterator nibble_sub(unsigned const& nibble);
+  std::unordered_map<unsigned, unsigned>::iterator nibble_sub_encyryption(unsigned const& nibble);
+  std::unordered_map<unsigned, unsigned>::iterator nibble_sub_decryption(unsigned const& nibble);
   std::tuple<unsigned, unsigned, unsigned, unsigned> shift_row(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
   unsigned encryption(unsigned plaintext, unsigned secret_key);
+  unsigned decryption(unsigned ciphertext, unsigned secret_key);
   unsigned mix_column(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
   unsigned key_addition(unsigned plain_text, unsigned secret_key);
  private:

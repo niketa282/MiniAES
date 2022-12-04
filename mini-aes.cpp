@@ -6,7 +6,7 @@ int miniAES::MiniAES::bit_count(unsigned const& n) {
  return bitcount;
 }
 
-std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(unsigned const& nibble) {
+std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub_encyryption(unsigned const& nibble) {
   substitution_table[0b0000] = 0b1110;
   substitution_table[0b0001] = 0b0100;
   substitution_table[0b0010] = 0b1101;
@@ -23,6 +23,29 @@ std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub(un
   substitution_table[0b1101] = 0b1001;
   substitution_table[0b1110] = 0b0000;
   substitution_table[0b1111] = 0b0111;
+
+  // find desired nibble
+  it = substitution_table.find(nibble);
+  return it;
+}
+
+std::unordered_map<unsigned, unsigned>::iterator miniAES::MiniAES::nibble_sub_decryption(unsigned const& nibble) {
+  substitution_table[0b0000] = 0b1110;
+  substitution_table[0b0001] = 0b0011;
+  substitution_table[0b0010] = 0b0100;
+  substitution_table[0b0011] = 0b1000;
+  substitution_table[0b0100] = 0b0001;
+  substitution_table[0b0101] = 0b1100;
+  substitution_table[0b0110] = 0b1010;
+  substitution_table[0b0111] = 0b1111;
+  substitution_table[0b1000] = 0b0111;
+  substitution_table[0b1001] = 0b1101;
+  substitution_table[0b1010] = 0b1001;
+  substitution_table[0b1011] = 0b0110;
+  substitution_table[0b1100] = 0b1011;
+  substitution_table[0b1101] = 0b0010;
+  substitution_table[0b1110] = 0b0000;
+  substitution_table[0b1111] = 0b0101;
 
   // find desired nibble
   it = substitution_table.find(nibble);
@@ -98,12 +121,12 @@ std::tuple<unsigned, unsigned, unsigned> miniAES::MiniAES::round_key_generator(u
   } 
   k0 = secret_key;
   auto [w0, w1, w2, w3] = extract_key_nibbles(secret_key);
-  unsigned w4 = w0 ^ ((nibble_sub(w3))->second) ^ rcon1;
+  unsigned w4 = w0 ^ ((nibble_sub_encyryption(w3))->second) ^ rcon1;
   unsigned w5 = w1 ^ w4;
   unsigned w6 = w2 ^ w5;
   unsigned w7 = w3 ^ w6;
   k1 = {w4, w5, w6, w7};
-  unsigned w8 = w4 ^ ((nibble_sub(w7))->second) ^ rcon2;
+  unsigned w8 = w4 ^ ((nibble_sub_encyryption(w7))->second) ^ rcon2;
   unsigned w9 = w5 ^ w8;
   unsigned w10 = w6 ^ w9;
   unsigned w11 = w7 ^ w10;
@@ -120,23 +143,45 @@ unsigned miniAES::MiniAES::encryption(unsigned plaintext, unsigned secret_key) {
 
   // round 1 encryption and getting K0 via std::get<2>(round_key_generator(secret_key)
   auto [w0, w1, w2, w3] = extract_key_nibbles(key_addition(plaintext, std::get<2>(round_key_generator(secret_key))));
-  unsigned nibble_sub_w0 = (nibble_sub(w0))->second;
-  unsigned nibble_sub_w1 = (nibble_sub(w1))->second;
-  unsigned nibble_sub_w2 = (nibble_sub(w2))->second;
-  unsigned nibble_sub_w3 = (nibble_sub(w3))->second;
+  unsigned nibble_sub_w0 = (nibble_sub_encyryption(w0))->second;
+  unsigned nibble_sub_w1 = (nibble_sub_encyryption(w1))->second;
+  unsigned nibble_sub_w2 = (nibble_sub_encyryption(w2))->second;
+  unsigned nibble_sub_w3 = (nibble_sub_encyryption(w3))->second;
   std::tuple<unsigned, unsigned, unsigned, unsigned> nibble_sub_output = {nibble_sub_w0, nibble_sub_w1, nibble_sub_w2, nibble_sub_w3};
   auto shifted_values = shift_row(nibble_sub_output);
   auto round1_output = key_addition(mix_column(shifted_values), std::get<1>(round_key_generator(secret_key)));
 
   // round 2 encryption 
   auto [w4, w5, w6, w7] = extract_key_nibbles(round1_output);
-  unsigned nibble_sub_w4 = (nibble_sub(w4))->second;
-  unsigned nibble_sub_w5 = (nibble_sub(w5))->second;
-  unsigned nibble_sub_w6 = (nibble_sub(w6))->second;
-  unsigned nibble_sub_w7 = (nibble_sub(w7))->second;
+  unsigned nibble_sub_w4 = (nibble_sub_encyryption(w4))->second;
+  unsigned nibble_sub_w5 = (nibble_sub_encyryption(w5))->second;
+  unsigned nibble_sub_w6 = (nibble_sub_encyryption(w6))->second;
+  unsigned nibble_sub_w7 = (nibble_sub_encyryption(w7))->second;
   std::tuple<unsigned, unsigned, unsigned, unsigned> nibble_sub_output_r2 = {nibble_sub_w4, nibble_sub_w5, nibble_sub_w6, nibble_sub_w7};
   auto shifted_values_r2 = shift_row(nibble_sub_output_r2);
   return key_addition(concatenate_key_nibbles(shifted_values_r2), std::get<0>(round_key_generator(secret_key)));
 }
 
+ unsigned miniAES::MiniAES::decryption(unsigned ciphertext, unsigned secret_key){
+  // round 1 decryption and getting K2 via std::get<0>(round_key_generator(secret_key)
+  auto [w0, w1, w2, w3] = extract_key_nibbles(key_addition(ciphertext, std::get<0>(round_key_generator(secret_key))));
+  unsigned nibble_sub_w0 = (nibble_sub_decryption(w0))->second;
+  unsigned nibble_sub_w1 = (nibble_sub_decryption(w1))->second;
+  unsigned nibble_sub_w2 = (nibble_sub_decryption(w2))->second;
+  unsigned nibble_sub_w3 = (nibble_sub_decryption(w3))->second;
+  std::tuple<unsigned, unsigned, unsigned, unsigned> nibble_sub_output = {nibble_sub_w0, nibble_sub_w1, nibble_sub_w2, nibble_sub_w3};
+  auto shifted_values = shift_row(nibble_sub_output);
+  // adding with k1 prior to mix_column
+  auto extraced_nibbles = extract_key_nibbles(key_addition(concatenate_key_nibbles(shifted_values), std::get<1>(round_key_generator(secret_key))));
+  auto round1_output = mix_column(extraced_nibbles);
 
+  // round 2 decryption
+  auto [w4, w5, w6, w7] = extract_key_nibbles(round1_output);
+  unsigned nibble_sub_w4 = (nibble_sub_decryption(w4))->second;
+  unsigned nibble_sub_w5 = (nibble_sub_decryption(w5))->second;
+  unsigned nibble_sub_w6 = (nibble_sub_decryption(w6))->second;
+  unsigned nibble_sub_w7 = (nibble_sub_decryption(w7))->second;
+  std::tuple<unsigned, unsigned, unsigned, unsigned> nibble_sub_output_r2 = {nibble_sub_w4, nibble_sub_w5, nibble_sub_w6, nibble_sub_w7};
+  auto shifted_values_r2 = shift_row(nibble_sub_output_r2);
+  return key_addition(concatenate_key_nibbles(shifted_values_r2), std::get<2>(round_key_generator(secret_key)));
+}

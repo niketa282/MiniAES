@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "mini-aes.h"
 
-TEST(BitCounterTest, CountNumbBits)
+TEST(MiniAesTest, CountNumbBits)
 {
    miniAES::MiniAES obj{};
    int count_numb_bits = obj.bit_count(0b1100001111110000);
@@ -22,7 +22,7 @@ TEST(MiniAesTest, ExtractNibblesFunciton)
    EXPECT_EQ(0b0000, std::get<3>(keys));
 }
 
-TEST(BitCounterTest, ShiftRow)
+TEST(MiniAesTest, ShiftRow)
 {
    miniAES::MiniAES obj{};
    std::tuple<unsigned, unsigned, unsigned, unsigned> result = obj.extract_key_nibbles(0b1111011110100001);
@@ -32,14 +32,14 @@ TEST(BitCounterTest, ShiftRow)
    EXPECT_EQ(0b0111, std::get<3>(obj.shift_row(result)));
 }
 
-TEST(BitCounterTest, ConcatanateKeyNibbles)
+TEST(MiniAesTest, ConcatanateKeyNibbles)
 {
    miniAES::MiniAES obj{};
    std::tuple<unsigned, unsigned, unsigned, unsigned> result = obj.extract_key_nibbles(0b1111011110100001);
    EXPECT_EQ(0b1111011110100001, obj.concatenate_key_nibbles(result));
 }
 
-TEST(BitCounterTest, MixColumn)
+TEST(MiniAesTest, MixColumn)
 {
    miniAES::MiniAES obj{};
    auto values = std::make_tuple(0b1111u, 0b0001u, 0b1010u, 0b0111u);
@@ -70,11 +70,11 @@ TEST(MiniAesTest, NibleSubFunction)
 {
    miniAES::MiniAES obj{};
    //testing input returns desired output via key and values using std::map data structure
-   std::unordered_map<unsigned, unsigned>::iterator result = obj.nibble_sub(0b0000);
+   std::unordered_map<unsigned, unsigned>::iterator result = obj.nibble_sub_encyryption(0b0000);
    EXPECT_EQ(0b1110, result->second);
-   result = obj.nibble_sub(0b1111);
+   result = obj.nibble_sub_encyryption(0b1111);
    EXPECT_EQ(0b0111, result->second);
-   result = obj.nibble_sub(0b1010);
+   result = obj.nibble_sub_encyryption(0b1010);
    EXPECT_EQ(0b0110, result->second);
 }
 
@@ -90,9 +90,17 @@ TEST(MiniAesTest, KeyAddition)
 TEST(MiniAesTest, Encryptiontest)
 {
    miniAES::MiniAES obj{};
-   // test for round 0 
+   // plaintext = 0b1001110001100011 ciphertext = 0b0111001011000110 
    auto result = obj.encryption(0b1001110001100011, 0b1100001111110000);
    EXPECT_EQ(0b0111001011000110, result);
+}
+
+TEST(MiniAesTest, Decryptiontest)
+{
+   miniAES::MiniAES obj{};
+   // plaintext = 0b1001110001100011 ciphertext = 0b0111001011000110 
+   auto result = obj.decryption(0b0111001011000110, 0b1100001111110000);
+   EXPECT_EQ(0b1001110001100011, result);
 }
 
 
