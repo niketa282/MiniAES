@@ -78,7 +78,7 @@ unsigned miniAES::MiniAES::mix_column(std::tuple<unsigned, unsigned, unsigned, u
   auto [w0, w1, w2, w3] = nibbles;
   auto [w4, w5, w6, w7] = constant_matrix;
   
-  std::array<std::array<unsigned, 16>, 16> lookup_table={{
+  std::array<std::array<unsigned, 16>, 16> Galois_multiplication_table={{
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
     {0,2,4,6,8,10,12,14,3,1,7,5,11,9,15,13},
@@ -97,17 +97,17 @@ unsigned miniAES::MiniAES::mix_column(std::tuple<unsigned, unsigned, unsigned, u
     {0,15,13,2,9,6,4,8,1,14,12,3,8,7,5,10}
   }};
 
-   auto val1 = lookup_table[w4][w0];
-   auto val2 = lookup_table[w6][w1];
-   auto val3 = lookup_table[w5][w0];
-   auto val4 = lookup_table[w7][w1];
+   auto val1 = Galois_multiplication_table[w4][w0];
+   auto val2 = Galois_multiplication_table[w6][w1];
+   auto val3 = Galois_multiplication_table[w5][w0];
+   auto val4 = Galois_multiplication_table[w7][w1];
    auto upperone = val1 ^ val2; // 0000
    auto lowerone = val3 ^ val4; // 1110
 
-   auto val5 = lookup_table[w4][w2];
-   auto val6 = lookup_table[w6][w3];
-   auto val7 = lookup_table[w5][w2];
-   auto val8 = lookup_table[w7][w3];
+   auto val5 = Galois_multiplication_table[w4][w2];
+   auto val6 = Galois_multiplication_table[w6][w3];
+   auto val7 = Galois_multiplication_table[w5][w2];
+   auto val8 = Galois_multiplication_table[w7][w3];
    auto upperone1 = val5 ^ val6; // 0011
    auto lowerone1 = val7 ^ val8; // 1110
 
