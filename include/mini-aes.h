@@ -20,7 +20,7 @@ class MiniAES {
   std::tuple<unsigned, unsigned, unsigned, unsigned> extract_key_nibbles(unsigned secret_key);
   unsigned concatenate_key_nibbles(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);
   std::tuple<unsigned, unsigned, unsigned> round_key_generator(unsigned secret_key);
-  int bit_count(unsigned const& n);
+  unsigned bit_count(unsigned const& n);
   std::unordered_map<unsigned, unsigned>::iterator nibble_sub_encyryption(unsigned const& nibble);
   std::unordered_map<unsigned, unsigned>::iterator nibble_sub_decryption(unsigned const& nibble);
   std::tuple<unsigned, unsigned, unsigned, unsigned> shift_row(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles);

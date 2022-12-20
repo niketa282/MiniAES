@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/googletest-release-1.12.1/*",
-                "${workspaceFolder}/inc/*"
+                "${workspaceFolder}/include/*"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
@@ -16,7 +16,7 @@
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
             },
-            "compileCommands": "${workspaceFolder}/compile_commands.json",
+            "compileCommands": "${workspaceFolder}/build/compile_commands.json",
             "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],

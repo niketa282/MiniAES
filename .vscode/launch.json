@@ -8,11 +8,16 @@
             "name": "(gdb - Linux) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/test-mini-aes",
+            "program": "${command:cmake.launchTargetPath}",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
-            "environment": [],
+            "environment": [
+              {
+                  "name": "PATH",
+                  "value": "$PATH:${command:cmake.launchTargetDirectory}"
+              }
+            ],
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [

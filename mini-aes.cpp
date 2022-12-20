@@ -1,8 +1,8 @@
 #include "mini-aes.h"
 #include <cmath>
 
-int miniAES::MiniAES::bit_count(unsigned const& n) {
- bitcount = (int)log2(n)+1;
+unsigned miniAES::MiniAES::bit_count(unsigned const& n) {
+ bitcount = static_cast<unsigned>(log2(n))+1;
  return bitcount;
 }
 
@@ -64,7 +64,7 @@ std::tuple<unsigned, unsigned, unsigned, unsigned> miniAES::MiniAES::extract_key
   std::get<0>(nibble_bits) = secret_key >> kbitshiftw0;
   std::get<1>(nibble_bits) = (secret_key >> kbitshiftw1) & kandval;
   std::get<2>(nibble_bits) = (secret_key >> kbitshiftw2) & kandval;
-  std::get<3>(nibble_bits) = (secret_key & kandval); 
+  std::get<3>(nibble_bits) = (secret_key & kandval);
   return nibble_bits;
 }
 
@@ -74,10 +74,10 @@ unsigned miniAES::MiniAES::concatenate_key_nibbles(std::tuple<unsigned, unsigned
 }
 
 unsigned miniAES::MiniAES::mix_column(std::tuple<unsigned, unsigned, unsigned, unsigned>& nibbles) {
-  auto constant_matrix = std::make_tuple(0b0011u, 0b0010u, 0b0010u, 0b0011u);
+  auto constant_matrix = std::make_tuple(0b0011U, 0b0010u, 0b0010u, 0b0011u);
   auto [w0, w1, w2, w3] = nibbles;
   auto [w4, w5, w6, w7] = constant_matrix;
-  
+
   std::array<std::array<unsigned, 16>, 16> Galois_multiplication_table={{
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
@@ -117,8 +117,8 @@ unsigned miniAES::MiniAES::mix_column(std::tuple<unsigned, unsigned, unsigned, u
 
 std::tuple<unsigned, unsigned, unsigned> miniAES::MiniAES::round_key_generator(unsigned secret_key){
   if (bit_count(secret_key) > kmaxsize) {
-    return {0, 0, 0}; // if key size greater than 16 bits we get no round keys generated 
-  } 
+    return {0, 0, 0}; // if key size greater than 16 bits we get no round keys generated
+  }
   k0 = secret_key;
   auto [w0, w1, w2, w3] = extract_key_nibbles(secret_key);
   unsigned w4 = w0 ^ ((nibble_sub_encyryption(w3))->second) ^ rcon1;
@@ -151,7 +151,7 @@ unsigned miniAES::MiniAES::encryption(unsigned plaintext, unsigned secret_key) {
   auto shifted_values = shift_row(nibble_sub_output);
   auto round1_output = key_addition(mix_column(shifted_values), std::get<1>(round_key_generator(secret_key)));
 
-  // round 2 encryption 
+  // round 2 encryption
   auto [w4, w5, w6, w7] = extract_key_nibbles(round1_output);
   unsigned nibble_sub_w4 = (nibble_sub_encyryption(w4))->second;
   unsigned nibble_sub_w5 = (nibble_sub_encyryption(w5))->second;

@@ -7,7 +7,7 @@ set (CMAKE_CXX_EXTENSIONS OFF)
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON) 
 
 add_library (mini-aes STATIC mini-aes.cpp)
-target_include_directories (mini-aes PUBLIC inc/)
+target_include_directories (mini-aes PUBLIC include)
 
 add_subdirectory(googletest-release-1.12.1)
 
